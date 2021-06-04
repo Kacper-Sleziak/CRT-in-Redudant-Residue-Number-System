@@ -1,4 +1,4 @@
-class RNS:
+class POS_to_RNS:
 
     def __init__(self, positional_number_a, base):
         self.positional_number = positional_number_a

@@ -1,125 +1,169 @@
-def convert_to_rns(base, positional_number):
-    rns_number = []
+class System:
+    def __init__(self, base, pos_number):
+        self.base = self.change_base(base)
+        self.pos_number = pos_number
+        self.rns_number = self.convert_to_rns(pos_number)
+        self.M = self.count_M()
 
-    for modulo in base:
-        remainder = positional_number % modulo
-        print()
-        rns_number.append(remainder)
+    def convert_to_rns(self, pos_number):
+        rns_number = []
 
-    return rns_number
+        for modulo in self.base:
+            remainder = pos_number % modulo
+            rns_number.append(remainder)
 
+        return rns_number
 
-def addition(RNS_a, RNS_b, base):
-    result = []
-    for i in range(len(RNS_a)):
-        remainders_sum = RNS_a[i] + RNS_b[i]
-        result.append(remainders_sum % base[i])
+    def change_base(self, base):
+        new_base = [2]
 
-    return result
+        for i in range(len(base)):
+            new_base.append(base[i])
 
+        return new_base
 
-def multiplication(RNS_a, RNS_b, base):
-    result = []
-    for i in range(len(RNS_a)):
-        remainders_sum = RNS_a[i] * RNS_b[i]
-        result.append(remainders_sum % base[i])
+    def addition(self, RNS_b):
+        result = []
+        for i in range(len(self.base)):
+            remainders_sum = self.rns_number[i] + RNS_b[i]
+            result.append(remainders_sum % base[i + 1])
 
-    return result
+        return result
 
+    def multiplication(self, RNS_b):
+        result = []
+        for i in range(len(self.base)):
+            remainders_sum = self.rns_number[i] * RNS_b[i]
+            result.append(remainders_sum % self.base[i + 1])
 
-def count_M(base):
-    m = 1
-    for m_i in base:
-        m = m * m_i
+        return result
 
-    return m
+    def count_M(self):
+        m = 1
+        counter = 0
 
+        for m_i in self.base:
+            if counter != 0:
+                m = m * m_i
 
-def convert_to_pos(RNS_a, base):
-    k = len(base)
-    M = count_M(base)
-    X = 0
+            counter += 1
 
-    for i in range(k):
-        m_i = base[i]
-        x_i = RNS_a[i]
-        M_ik = int(M / m_i)
+        return m
 
-        X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
+    def convert_to_pos(self):
+        k = len(self.base)
+        X = 0
 
-        X += M_ik * X_ik
+        for i in range(1, k):
+            m_i = self.base[i]
+            x_i = self.rns_number[i]
+            M_ik = int(self.M / m_i)
 
-    X = X % M
-    return X
+            X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
 
+            X += M_ik * X_ik
 
-def get_rank_of_number(RNS_a, base):
-    length = len(base)
+        X = X % self.M
+        return X
 
-    M = count_M(base)
-    p_x = 0
+    def get_X_ik(self, i):
 
-    for i in range(length):
-        m_i = base[i]
-        x_i = RNS_a[i]
-        M_ik = int(M / m_i)
-
-        X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
-
-        p_x += X_ik / m_i
-
-    p_x = int(p_x)
-
-    return p_x
-
-
-def convert_to_pos_by_rank(RNS_a, base):
-    k = len(base)
-    M = count_M(base)
-    X = 0
-
-    for i in range(k):
-        m_i = base[i]
-        x_i = RNS_a[i]
-        M_ik = int(M / m_i)
+        m_i = self.base[i]
+        x_i = self.rns_number[i]
+        M_ik = int(self.M / m_i)
 
         X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
 
-        X += M_ik * X_ik
+        return X_ik
 
-    X = X - M * get_rank_of_number(RNS_a, base)
-    return X
+    def get_rank_of_number(self):
+        length = len(self.base)
+        p_x = 0
+
+        for i in range(1, length):
+            m_i = self.base[i]
+
+            X_ik = self.get_X_ik(i)
+
+            p_x += X_ik / m_i
+
+        p_x = int(p_x)
+
+        return p_x
+
+    def convert_to_pos_by_rank(self):
+        k = len(self.base)
+        X = 0
+
+        for i in range(k):
+            m_i = base[i + 1]
+            M_ik = int(M / m_i)
+
+            X_ik = self.get_X_ik(i)
+
+            X += M_ik * X_ik
+
+        X = X - self.M * self.get_rank_of_number()
+        return X
+
+    def get_ro_caret(self):
+        length = len(self.base)
+        k = length - 1
+        m_k = self.base[k]
+        R_ik = 0
+
+        for i in range(length):
+            R_ik += self.get_R_ik(i)
+
+        R_ik = int(1 / m_k * R_ik)
+
+        return R_ik
+
+    def get_R_ik(self, i):
+        length = len(self.base)
+        k = length - 1
+        m_i = self.base[i]
+        x_i = self.rns_number[i]
+        m_k = self.base[k]
+        x_k = self.rns_number[k]
+        M = int(self.M / m_k)  # M_i,k-1
+        R_ik = 0
 
 
-def get_ro_caret(RNS_a, base):
-    length = len(base)
-    k = length - 1
-    m_k = base[k]
-    R_ik = 0
 
-    for i in range(length):
-        R_ik += get_R_ik(RNS_a, base, i)
+        if i != k:
+            M_ik = int(M / m_i)
+            invmod_M_ik = pow(M_ik, -1, m_i)
+            invmod_m_i = pow(m_i, -1, m_k)
+            first_part = ((x_i*(invmod_M_ik))%m_i)*(-1)
+            R_ik = (first_part * invmod_m_i) % m_k
 
-    R_ik = int(1/m_k * R_ik)
+        else:
+            R_ik = (pow(M, -1, m_k) * x_k) % m_k
 
-    return R_ik
+        return R_ik
 
+    def get_x_caret(self):
+        ro_caret = self.get_ro_caret()
+        length = len(self.base)
+        X_caret = 0
 
-def get_R_ik(RNS_a, base, i):
-    length = len(base)
-    k = length - 1
-    m_i = base[i]
-    x_i = RNS_a[i]
-    m_k = base[k]
-    x_k = RNS_a[k]
-    M = int(count_M(base) / base[k])  # M_i,k-1
-    R_ik = 0
+        for i in range(1, length):
+            m_i = self.base[i]
+            M_ik = self.M / m_i
+            X_ik = self.get_X_ik(i)
 
-    if i != k:
-        M_ik = int(M / m_i)
-        R_ik = (-((pow(M_ik, -1, m_i) * x_i) % m_i) * (pow(m_i, -1, m_k)) % m_k
+            X_caret += M_ik * X_ik
 
-    else:
-        R_ik = (pow(M, -1, m_k) * x_k) % m_k
+        X_caret = X_caret - ro_caret * self.M
 
-    return R_ik
+        return X_caret
+
+    def get_delta_k(self):
+
+        X_caret = self.get_x_caret()
+        X = self.convert_to_pos()
+
+        delta_k = int((X % 2 + X_caret % 2) % 2)
+
+        return delta_k

@@ -117,7 +117,7 @@ def get_R_ik(RNS_a, base, i):
 
     if i != k:
         M_ik = int(M / m_i)
-        R_ik = (((pow(M_ik, -1, m_i) * x_i) % m_i) * (pow(m_i, -1, m_k)) % m_k
+        R_ik = (-((pow(M_ik, -1, m_i) * x_i) % m_i) * (pow(m_i, -1, m_k)) % m_k
 
     else:
         R_ik = (pow(M, -1, m_k) * x_k) % m_k

@@ -24,19 +24,32 @@ class System:
 
     def addition(self, RNS_b):
         result = []
-        for i in range(len(self.base)):
-            remainders_sum = self.rns_number[i] + RNS_b[i]
-            result.append(remainders_sum % base[i + 1])
+        for i in range(1, len(self.base)):
+            remainders_sum = self.rns_number[i] + RNS_b.rns_number[i]
+            result.append(remainders_sum % self.base[i])
 
         return result
 
     def multiplication(self, RNS_b):
         result = []
-        for i in range(len(self.base)):
-            remainders_sum = self.rns_number[i] * RNS_b[i]
-            result.append(remainders_sum % self.base[i + 1])
+        for i in range(1, len(self.base)):
+            remainders_sum = self.rns_number[i] * RNS_b.rns_number[i]
+            result.append(remainders_sum % self.base[i])
 
         return result
+
+    def division(self, RNS_b):
+
+        div_result = []
+        inv_RNS_b = []
+
+        for i in range(1, len(self.base)):
+            print(i)
+            inv_RNS_b.append(pow(RNS_b.pos_number, -1, self.base[i]))
+            part_div_result = inv_RNS_b[i - 1] * self.rns_number[i]
+            div_result.append(part_div_result % self.base[i])
+
+        return div_result
 
     def count_M(self):
         m = 1
@@ -49,22 +62,6 @@ class System:
             counter += 1
 
         return m
-
-    def convert_to_pos(self):
-        k = len(self.base)
-        X = 0
-
-        for i in range(1, k):
-            m_i = self.base[i]
-            x_i = self.rns_number[i]
-            M_ik = int(self.M / m_i)
-
-            X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
-
-            X += M_ik * X_ik
-
-        X = X % self.M
-        return X
 
     def get_X_ik(self, i):
 
@@ -126,16 +123,14 @@ class System:
         x_i = self.rns_number[i]
         m_k = self.base[k]
         x_k = self.rns_number[k]
-        M = int(self.M / m_k)  # M_i,k-1
+        M = int(self.M / m_k)
         R_ik = 0
-
-
 
         if i != k:
             M_ik = int(M / m_i)
             invmod_M_ik = pow(M_ik, -1, m_i)
             invmod_m_i = pow(m_i, -1, m_k)
-            first_part = ((x_i*(invmod_M_ik))%m_i)*(-1)
+            first_part = ((x_i * (invmod_M_ik)) % m_i) * (-1)
             R_ik = (first_part * invmod_m_i) % m_k
 
         else:
@@ -167,3 +162,6 @@ class System:
         delta_k = int((X % 2 + X_caret % 2) % 2)
 
         return delta_k
+
+    def get_rns(self):
+        return self.rns_number

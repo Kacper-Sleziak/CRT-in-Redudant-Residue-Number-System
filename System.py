@@ -69,7 +69,10 @@ class System:
         x_i = self.rns_number[i]
         M_ik = int(self.M / m_i)
 
-        X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
+        try:
+            X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i
+        except ValueError:
+            X_ik = 0
 
         return X_ik
 
@@ -92,9 +95,9 @@ class System:
         k = len(self.base)
         X = 0
 
-        for i in range(k):
-            m_i = base[i + 1]
-            M_ik = int(M / m_i)
+        for i in range(1, k):
+            m_i = self.base[i]
+            M_ik = int(self.M / m_i)
 
             X_ik = self.get_X_ik(i)
 
@@ -130,7 +133,7 @@ class System:
             M_ik = int(M / m_i)
             invmod_M_ik = pow(M_ik, -1, m_i)
             invmod_m_i = pow(m_i, -1, m_k)
-            first_part = ((x_i * (invmod_M_ik)) % m_i) * (-1)
+            first_part = ((x_i * invmod_M_ik) % m_i) * (-1)
             R_ik = (first_part * invmod_m_i) % m_k
 
         else:

@@ -67,7 +67,8 @@ class System:
 
         m_i = self.base[i]
         x_i = self.rns_number[i]
-        M_ik = int(self.M / m_i)
+
+        M_ik = self.M // m_i
 
         try:
             X_ik = (pow(M_ik, -1, m_i) * x_i) % m_i

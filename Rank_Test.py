@@ -15,18 +15,18 @@ def are_coprime(a, b):
     return hcf == 1
 
 
-pos_number = 1000000                        # liczba, ktorej range bedziemy obliczac
-number = int(math.pow(2, 13))               # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
+pos_number = 1000000                                    # liczba, ktorej range bedziemy obliczac
+number = int(math.pow(2, 13))                           # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
 
-coprime_list = []                           # lista liczb pierwszych i rownoczesnia najwieksza baza
-time_list = np.array([])                    # tablica usrednionych pomiarow
-base_list = []                              # lista baz
-base_lengths = np.array([])                 # tablica wielkosci baz
+coprime_list = []                                       # lista liczb pierwszych i rownoczesnia najwieksza baza
+time_list = np.array([])                                # tablica usrednionych pomiarow
+base_list = []                                          # lista baz
+base_lengths = np.array([])                             # tablica wielkosci baz
 
-number_of_tests = 1                         # liczba testow do przeprowadzenia
-largest_base = 1000                         # wielkosc najwiekszej bazy
-number_of_bases = 20                        # liczba baz dla, ktorej chcemy dokonac pomiarow
-precision = largest_base // number_of_bases # liczba punktow na wykresie
+number_of_tests = 1                                     # liczba testow do przeprowadzenia
+largest_base = 1000                                     # wielkosc najwiekszej bazy
+number_of_bases = 20                                    # liczba baz dla, ktorej chcemy dokonac pomiarow
+density_of_diagram = largest_base // number_of_bases    # liczba punktow na wykresie
 
 counter = 0
 
@@ -56,7 +56,7 @@ for i in range(3, number):
 for i in range(number_of_bases):
 
     if i != 0:
-        for k in range(precision):
+        for k in range(density_of_diagram):
             coprime_list.pop()
 
     buffor_list = coprime_list.copy()
@@ -64,7 +64,7 @@ for i in range(number_of_bases):
 
 # Wielkosci baz
 for i in range(number_of_bases):
-    base_lengths = np.append(base_lengths, largest_base - i * precision)
+    base_lengths = np.append(base_lengths, largest_base - i * density_of_diagram)
 
 # wlasciwe pomiary czasu
 for i in range(number_of_bases):

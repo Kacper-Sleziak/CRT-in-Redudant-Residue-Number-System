@@ -20,6 +20,7 @@ coprime_list = []  # lista liczb pierwszych
 time_list = np.array([])
 base_list = []  # lista baz
 counter = 0  # licznik
+number_of_tests = 10
 number_of_bases = 1000  # liczba baz
 number = int(math.pow(2, 13))  # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
 
@@ -50,13 +51,17 @@ for i in range(number_of_bases):
     coprime_list.pop(number_of_bases - i - 1)
 
 for i in range(number_of_bases):
-    rns = System(base_list[i], pos_number)
+    time_of_operation = 0
 
-    start_time = time.time()
+    for k in range(number_of_tests):
+        rns = System(base_list[i], pos_number)
+        start_time = time.time()
+        rns.get_rank_of_number()
 
-    rns.get_rank_of_number()
+        time_of_operation =+ (time.time() - start_time) * 10 ** 3
 
-    time_of_operation = (time.time() - start_time) * 10 ** 3
+    average_time_of_operation = time_of_operation//number_of_tests
+
     time_list = np.append(time_list, time_of_operation)
 
 base_lengths = np.array([])

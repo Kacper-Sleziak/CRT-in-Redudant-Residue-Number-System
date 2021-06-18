@@ -62,7 +62,7 @@ for i in range(number_of_bases):
 base_lengths = np.array([])
 
 for i in range(3, number_of_bases + 3):
-    base_lengths = np.append(base_lengths, 1003 - i)
+    base_lengths = np.append(base_lengths, number_of_bases + 3 - i)
 
 y = time_list
 x = base_lengths

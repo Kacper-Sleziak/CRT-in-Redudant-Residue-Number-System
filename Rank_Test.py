@@ -15,15 +15,22 @@ def are_coprime(a, b):
     return hcf == 1
 
 
-pos_number = 1000000
-coprime_list = []  # lista liczb pierwszych
-time_list = np.array([])
-base_list = []  # lista baz
-counter = 0  # licznik
-number_of_tests = 10
-number_of_bases = 1000  # liczba baz
-number = int(math.pow(2, 13))  # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
+pos_number = 1000000                        # liczba, ktorej range bedziemy obliczac
+number = int(math.pow(2, 13))               # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
 
+coprime_list = []                           # lista liczb pierwszych i rownoczesnia najwieksza baza
+time_list = np.array([])                    # tablica usrednionych pomiarow
+base_list = []                              # lista baz
+base_lengths = np.array([])                 # tablica wielkosci baz
+
+number_of_tests = 1                         # liczba testow do przeprowadzenia
+largest_base = 1000                         # wielkosc najwiekszej bazy
+number_of_bases = 20                        # liczba baz dla, ktorej chcemy dokonac pomiarow
+precision = largest_base // number_of_bases # liczba punktow na wykresie
+
+counter = 0
+
+# Obliczanie najdluzszej bazy
 for i in range(3, number):
 
     if i == 3:
@@ -42,39 +49,44 @@ for i in range(3, number):
             counter += 1
             coprime_list.append(i)
 
-    if counter >= number_of_bases + 3:
+    if counter >= largest_base:
         break
 
+# tworzenie mniejszych baz za pomoca zmienijszania najwiekszej
 for i in range(number_of_bases):
+
+    if i != 0:
+        for k in range(precision):
+            coprime_list.pop()
+
     buffor_list = coprime_list.copy()
     base_list.append(buffor_list)
-    coprime_list.pop(number_of_bases - i - 1)
 
+# Wielkosci baz
+for i in range(number_of_bases):
+    base_lengths = np.append(base_lengths, largest_base - i * precision)
+
+# wlasciwe pomiary czasu
 for i in range(number_of_bases):
     time_of_operation = 0
 
     for k in range(number_of_tests):
         rns = System(base_list[i], pos_number)
         start_time = time.time()
-        rns.get_rank_of_number()
+        rns.get_rank_of_number_redundant()
 
-        time_of_operation =+ (time.time() - start_time) * 10 ** 3
+        time_of_operation = + (time.time() - start_time) * 10 ** 3
 
-    average_time_of_operation = time_of_operation//number_of_tests
+    average_time_of_operation = time_of_operation // number_of_tests
 
     time_list = np.append(time_list, time_of_operation)
-
-base_lengths = np.array([])
-
-for i in range(3, number_of_bases + 3):
-    base_lengths = np.append(base_lengths, number_of_bases + 3 - i)
 
 y = time_list
 x = base_lengths
 
 plt.plot(x, y)
 
-plt.xlabel("Liczba baz")
+plt.xlabel("Liczba modulow w bazie")
 plt.ylabel("Czas obliczania [ms]")
 
 plt.show()

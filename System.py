@@ -100,6 +100,7 @@ class System:
         delta_k += ro_caret % 2
         x_0 = self.rns_number[0]
         delta_k += x_0
+
         for i in range(1, k):
             X_ik = self.get_X_ik(i)
             X_ik = X_ik % 2
@@ -145,11 +146,11 @@ class System:
         x_i = self.rns_number[i]
         m_k = self.base[k]
         x_k = self.rns_number[k]
-        M = int(self.M / m_k)
+        M = self.M // m_k
         R_ik = 0
 
         if i != k:
-            M_ik = int(M / m_i)
+            M_ik = M // m_i
             invmod_M_ik = pow(M_ik, -1, m_i)
             invmod_m_i = pow(m_i, -1, m_k)
             first_part = ((x_i * invmod_M_ik) % m_i) * (-1)

@@ -23,7 +23,7 @@ time_list = np.array([])                                # tablica usrednionych p
 base_list = []                                          # lista baz
 base_lengths = np.array([])                             # tablica wielkosci baz
 
-number_of_tests = 1                                     # liczba testow do przeprowadzenia
+number_of_tests = 1000                                   # liczba testow do przeprowadzenia
 largest_base = 1000                                     # wielkosc najwiekszej bazy
 number_of_bases = 20                                    # liczba baz dla, ktorej chcemy dokonac pomiarow
 density_of_diagram = largest_base // number_of_bases    # liczba punktow na wykresie
@@ -75,11 +75,11 @@ for i in range(number_of_bases):
         start_time = time.time()
         rns.get_rank_of_number_redundant()
 
-        time_of_operation = + (time.time() - start_time) * 10 ** 3
+        time_of_operation = time_of_operation + (time.time() - start_time) * 10 ** 3
 
-    average_time_of_operation = time_of_operation // number_of_tests
+    average_time_of_operation = time_of_operation / number_of_tests
 
-    time_list = np.append(time_list, time_of_operation)
+    time_list = np.append(time_list, average_time_of_operation)
 
 y = time_list
 x = base_lengths
@@ -87,6 +87,6 @@ x = base_lengths
 plt.plot(x, y)
 
 plt.xlabel("Liczba modulow w bazie")
-plt.ylabel("Czas obliczania [ms]")
+plt.ylabel("Czas obliczania rangi [ms]")
 
 plt.show()

@@ -92,6 +92,24 @@ class System:
 
         return p_x
 
+    def get_rank_of_number_redundant(self):
+        k = len(self.base)
+        p_x = 0
+        ro_caret = self.get_ro_caret()
+        delta_k = 0
+        delta_k += ro_caret % 2
+        x_0 = self.rns_number[0]
+        delta_k += x_0
+        for i in range(1, k):
+            X_ik = self.get_X_ik(i)
+            X_ik = X_ik % 2
+            delta_k += X_ik
+
+        delta_k = delta_k % 2
+
+        p_x = delta_k + ro_caret
+        return p_x
+
     def convert_to_pos_by_rank(self):
         k = len(self.base)
         X = 0
@@ -113,7 +131,7 @@ class System:
         m_k = self.base[k]
         R_ik = 0
 
-        for i in range(length):
+        for i in range(1, length):
             R_ik += self.get_R_ik(i)
 
         R_ik = int(1 / m_k * R_ik)

@@ -67,8 +67,9 @@ def rns_operations_menu():
         print("3 aby pomnozyc dwie liczby w systemie resztowym")
         print("4 aby podzielic dwie liczby w systemie resztowym")
         print("5 aby obliczyć rangę liczby")
-        print("6 aby obliczyc liczbe w systemie pozycyjnym przy pomocy rangi")
-        print("7 aby wyjsc z menu operacji w systemie resztowym")
+        print("6 aby obliczyć rangę liczby nadmiarowo")
+        print("7 aby obliczyc liczbe w systemie pozycyjnym przy pomocy rangi")
+        print("8 aby wyjsc z menu operacji w systemie resztowym")
 
         print("")
         x = input("Wpisz numer: ")
@@ -114,10 +115,14 @@ def rns_operations_menu():
             print("")
 
         elif x == '6':
-            print(f"Liczba w systemie pozycyjnym: {RNS.convert_to_pos_by_rank()}")
+            print(f"Ranga liczby: {RNS.get_rank_of_number_redundant()}")
             print("")
 
         elif x == '7':
+            print(f"Liczba w systemie pozycyjnym: {RNS.convert_to_pos_by_rank()}")
+            print("")
+
+        elif x == '8':
             break
 
         else:

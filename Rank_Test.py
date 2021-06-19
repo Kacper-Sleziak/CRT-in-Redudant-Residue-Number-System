@@ -17,19 +17,19 @@ def are_coprime(a, b):
     return hcf == 1
 
 
-pos_number = 1000000                                        # liczba, ktorej range bedziemy obliczac
-number = int(math.pow(2, 13))                               # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
+pos_number = 1000000                                  # liczba, ktorej range bedziemy obliczac
+number = int(math.pow(2, 13))                         # liczba od ktorej zaczynamy wyszukiwanie liczb wzglednie pierwszych
 
-coprime_list = []                                           # lista liczb pierwszych i rownoczesnia najwieksza baza
-time_list_redudant = np.array([])                           # tablica usrednionych pomiarow z nadmiarem
-time_list_non_redudant = np.array([])                       # tablica usrednionych pomiarow bez nadmiarow
-base_list = []                                              # lista baz
-base_lengths = np.array([])                                 # tablica wielkosci baz
+coprime_list = []                                     # lista liczb pierwszych i rownoczesnia najwieksza baza
+time_list_redudant = np.array([])                     # tablica usrednionych pomiarow z nadmiarem
+time_list_non_redudant = np.array([])                 # tablica usrednionych pomiarow bez nadmiarow
+base_list = []                                        # lista baz
+base_lengths = np.array([])                           # tablica wielkosci baz
 
-number_of_tests = 1000                                      # liczba testow do przeprowadzenia
-largest_base = 1000                                         # wielkosc najwiekszej bazy
-number_of_bases = 20                                        # liczba baz dla, ktorej chcemy dokonac pomiarow
-density_of_diagram = largest_base // number_of_bases        # liczba punktow na wykresie
+number_of_tests = 1000                                # liczba testow do przeprowadzenia
+largest_base = 1000                                   # wielkosc najwiekszej bazy
+number_of_bases = 20                                  # liczba baz dla, ktorej chcemy dokonac pomiarow
+density_of_diagram = largest_base // number_of_bases  # liczba punktow na wykresie
 
 counter = 0
 
@@ -91,6 +91,7 @@ for i in range(number_of_bases):
     time_list_redudant = np.append(time_list_redudant, average_time_of_operation_redudant)
     time_list_non_redudant = np.append(time_list_non_redudant, abs(average_time_of_operation_non_redudant))
 
+# Tworzenie wykresu
 y_1 = time_list_redudant
 x = base_lengths
 y_2 = time_list_non_redudant
@@ -98,8 +99,8 @@ y_2 = time_list_non_redudant
 plt.xlabel("Liczba modulow w bazie")
 plt.ylabel("Czas obliczania rangi [ms]")
 
-plt.plot(x, y_1, label = "Ranga z nadmiarem")
-plt.plot(x, y_2, label = "Ranga bez nadmiaru")
+plt.plot(x, y_1, label="Ranga z nadmiarem")
+plt.plot(x, y_2, label="Ranga bez nadmiaru")
 
 plt.legend()
 

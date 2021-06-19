@@ -128,5 +128,4 @@ def rns_operations_menu():
         else:
             print("Wprowadziles/as zly znak!")
 
-
 main_menu()
